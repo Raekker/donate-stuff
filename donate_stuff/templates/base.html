@@ -16,36 +16,36 @@
     <link rel="icon" href="{% static 'images/favicons/favicon.ico' %}">
 
     {% block css %}
-    
+
     <!-- Latest compiled and minified Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+
 
     <!-- Your stuff: Third-party CSS libraries go here -->
-    
+
     <!-- This file stores project-specific CSS -->
-    
+
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
-    
-    
+
+
     {% endblock %}
     <!-- Le javascript
     ================================================== -->
     {# Placed at the top of the document so pages load faster with defer #}
     {% block javascript %}
-      
+
       <!-- Bootstrap JS and its dependencies-->
       <script defer src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script defer src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
       <script defer src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
       <!-- Your stuff: Third-party javascript libraries go here -->
-      
+
 
       <!-- place project specific Javascript in this file -->
-      
+
       <script defer src="{% static 'js/project.js' %}"></script>
-      
+
 
     {% endblock javascript %}
 
@@ -53,59 +53,124 @@
 
   <body>
 
-    <div class="mb-1">
-      <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="{% url 'home' %}">donate-stuff</a>
+{#    <div class="mb-1">#}
+{#      <nav class="navbar navbar-expand-md navbar-light bg-light">#}
+{#        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
+{#          <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <a class="navbar-brand" href="{% url 'home' %}">donate-stuff</a>#}
+{##}
+{#        <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+{#          <ul class="navbar-nav mr-auto">#}
+{#            <li class="nav-item active">#}
+{#              <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>#}
+{#            </li>#}
+{#            <li class="nav-item">#}
+{#              <a class="nav-link" href="{% url 'about' %}">About</a>#}
+{#            </li>#}
+{#            {% if request.user.is_authenticated %}#}
+{#              <li class="nav-item">#}
+                {# URL provided by django-allauth/account/urls.py #}
+{#                <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>#}
+{#              </li>#}
+{#              <li class="nav-item">#}
+                {# URL provided by django-allauth/account/urls.py #}
+{#                <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>#}
+{#              </li>#}
+{#            {% else %}#}
+{#              <li class="nav-item">#}
+                {# URL provided by django-allauth/account/urls.py #}
+{#                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>#}
+{#              </li>#}
+{#              <li class="nav-item">#}
+                {# URL provided by django-allauth/account/urls.py #}
+{#                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>#}
+{#              </li>#}
+{#            {% endif %}#}
+{#          </ul>#}
+{#        </div>#}
+{#      </nav>#}
+{##}
+{#    </div>#}
+    <header class="{% if request.path == '/' %}header--main-page{% elif "donation" in request.path %}header--form-page{% endif %}">
+      <nav class="container container--70">
+        <ul class="nav--actions">
+          {% if request.user.is_authenticated %}
+            <li class="logged-user">
+              Witaj {{ request.user.name }}
+              <ul class="dropdown">
+                <li><a href="{% url 'users:detail' request.user.username %}">Profil</a></li>
+                <li><a href="#">Moje zbiórki</a></li>
+                {% if request.user.is_superuser %}
+                  <li><a href="/admin">Panel Administracyjny</a></li>
+                {% endif %}
+                <li><a href="{% url 'account_logout' %}">Wyloguj</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li><a href="{% url 'account_login' %}" class="btn btn--small btn--without-border">Zaloguj</a></li>
+            <li><a href="{% url 'account_signup' %}" class="btn btn--small btn--highlighted">Załóż konto</a></li>
+          {% endif %}
+        </ul>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">About</a>
-            </li>
-            {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a>
-              </li>
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign Out" %}</a>
-              </li>
-            {% else %}
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
-              </li>
-              <li class="nav-item">
-                {# URL provided by django-allauth/account/urls.py #}
-                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
-              </li>
-            {% endif %}
-          </ul>
-        </div>
+        <ul>
+          {% if request.path == "/" %}
+            <li><a href="{% url 'home' %}" class="btn btn--without-border">Start</a></li>
+            <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
+            <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
+            <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+            <li><a href="{% url 'donation' %}" class="btn btn--without-border">Przekaż dary</a></li>
+            <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
+          {% else %}
+            <li><a href="{% url 'home' %}" class="btn btn--without-border">Start</a></li>
+            <li><a href="{% url 'home' %}#steps" class="btn btn--without-border">O co chodzi?</a></li>
+            <li><a href="{% url 'home' %}#about-us" class="btn btn--without-border">O nas</a></li>
+            <li><a href="{% url 'home' %}#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+            <li><a href="{% url 'donation' %}" class="btn btn--without-border">Przekaż dary</a></li>
+            <li><a href="{% url 'home' %}#contact" class="btn btn--without-border">Kontakt</a></li>
+          {% endif %}
+
+        </ul>
       </nav>
+      {% block header_message %}
 
-    </div>
+      {% endblock header_message %}
+    </header>
+    <div>
 
-    <div class="container">
-
-      {% if messages %}
-          {% for message in messages %}
-              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
-          {% endfor %}
-      {% endif %}
+{#      {% if messages %}#}
+{#          {% for message in messages %}#}
+{#              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>#}
+{#          {% endfor %}#}
+{#      {% endif %}#}
+    {{ request.user.name }}
 
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
 
     </div> <!-- /container -->
+    <footer>
+      <div id="contact" class="contact">
+        <h2>Skontaktuj się z nami</h2>
+        <h3>Formularz kontaktowy</h3>
+        <form class="form--contact">
+          <div class="form-group form-group--50"><input type="text" name="name" placeholder="Imię" /></div>
+          <div class="form-group form-group--50"><input type="text" name="surname" placeholder="Nazwisko" /></div>
+
+          <div class="form-group"><textarea name="message" placeholder="Wiadomość" rows="1"></textarea></div>
+
+          <button class="btn" type="submit">Wyślij</button>
+        </form>
+      </div>
+      <div class="bottom-line">
+        <span class="bottom-line--copy">Copyright &copy; 2021</span>
+        <div class="bottom-line--icons">
+          <a href="#" class="btn btn--small"><img src="{% static 'images/icon-facebook.svg' %}"/></a>
+          <a href="#" class="btn btn--small"><img src="{% static 'images/icon-instagram.svg' %}"/></a>
+        </div>
+      </div>
+    </footer>
 
     {% block modal %}{% endblock modal %}
 
@@ -114,4 +179,3 @@
     {% endblock inline_javascript %}
   </body>
 </html>
- 
