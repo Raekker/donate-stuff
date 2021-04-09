@@ -15,13 +15,13 @@
   <section id="stats" class="stats">
     <div class="container container--85">
       <div class="stats--item">
-        <em>10</em>
+        <em>{{ bags }}</em>
         <h3>Oddanych worków</h3>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius est beatae, quod accusamus illum tempora!</p>
       </div>
 
       <div class="stats--item">
-        <em>5</em>
+        <em>{{ organizations }}</em>
         <h3>Wspartych organizacji</h3>
         <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laboriosam magnam, sint nihil cupiditate quas quam.</p>
       </div>
@@ -79,6 +79,16 @@
       <p>W naszej bazie znajdziesz listę zweryfikowanych Fundacji, z którymi współpracujemy. Możesz sprawdzić czym się zajmują, komu pomagają i czego potrzebują.</p>
 
       <ul class="help--slides-items">
+        {% for charity in charities %}
+        <li>
+        <div class="col">
+          <div class="title">Fundacja "{{ charity.name }}"</div>
+          <div class="subtitle">{{ charity.description }}</div>
+        </div>
+        <div class="col"><div class="text">{{ charity.categories.all|join:", " }}</div></div>
+        </li>
+        {% endfor %}
+
         <li>
           <div class="col">
             <div class="title">Fundacja "Dbam o Zdrowie"</div>
@@ -123,6 +133,15 @@
         quos suscipit corporis!
       </p>
       <ul class="help--slides-items">
+        {% for org in gov_orgs %}
+        <li>
+        <div class="col">
+          <div class="title">Organizacja {{ org.name }}</div>
+          <div class="subtitle">{{ org.description }}</div>
+        </div>
+        <div class="col"><div class="text">{{ org.categories.all|join:", " }}</div></div>
+        </li>
+        {% endfor %}
         <li>
           <div class="col">
             <div class="title">Organizacja 1</div>
@@ -175,6 +194,15 @@
     <div class="help--slides" data-id="3">
       <p>Lorem ipsum dolor sit amet, his ocurreret persequeris ea, ad utinam laudem duo. Verterem adipisci partiendo eos ne, ea his reque quaeque recteque, ne quo lobortis intellegam.</p>
       <ul class="help--slides-items">
+        {% for org in local_collections %}
+        <li>
+        <div class="col">
+          <div class="title">{{ org.name }}</div>
+          <div class="subtitle">{{ org.description }}</div>
+        </div>
+        <div class="col"><div class="text">{{ org.categories.all|join:", " }}</div></div>
+        </li>
+        {% endfor %}
         <li>
           <div class="col">
             <div class="title">Lokalna zbiórka 1</div>
