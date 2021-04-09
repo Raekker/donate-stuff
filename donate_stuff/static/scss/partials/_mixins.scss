@@ -13,7 +13,11 @@
 
 @mixin transition($type: all, $time: $transition-time, $efect: ease-in-out) {
   transition: $type $time $efect;
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
 
 
 @mixin headerDecoration(){
@@ -49,4 +53,8 @@
   @media (min-width: 990px) and (max-width: 1230px) {
     @content;
   }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
