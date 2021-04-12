@@ -6,7 +6,11 @@ from django.views import defaults as default_views
 from django.views.generic import TemplateView
 from rest_framework.authtoken.views import obtain_auth_token
 
-from donate_stuff.donation.views import MainPageView
+from donate_stuff.donation.views import (
+    MainPageView,
+    DonationView,
+    DonationConfirmationView,
+)
 
 urlpatterns = [
     path("", MainPageView.as_view(), name="home"),
@@ -18,8 +22,13 @@ urlpatterns = [
     # Your stuff: custom urls includes go here
     path(
         "donation/",
-        TemplateView.as_view(template_name="donation/donation_form.html"),
+        DonationView.as_view(),
         name="donation",
+    ),
+    path(
+        "donation/confirmation/",
+        DonationConfirmationView.as_view(),
+        name="donation-confirmation",
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
