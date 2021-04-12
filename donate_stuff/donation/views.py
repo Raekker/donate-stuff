@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import View
 
@@ -21,3 +22,13 @@ class MainPageView(View):
         ctx["gov_orgs"] = gov_orgs
         ctx["local_collections"] = local_collections
         return render(request, "pages/home.html", ctx)
+
+
+class DonationView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, "donation/donation_form.html")
+
+
+class DonationConfirmationView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, "donation/donation_form_confirmation.html")

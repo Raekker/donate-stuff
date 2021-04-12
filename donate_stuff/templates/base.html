@@ -102,7 +102,7 @@
                 <li><a href="{% url 'users:detail' request.user.username %}">Profil</a></li>
                 <li><a href="#">Moje zbiórki</a></li>
                 {% if request.user.is_superuser %}
-                  <li><a href="/admin">Panel Administracyjny</a></li>
+                  <li><a href="{% url 'admin:index' %}">Panel Administracyjny</a></li>
                 {% endif %}
                 <li><a href="{% url 'account_logout' %}">Wyloguj</a></li>
               </ul>
@@ -137,12 +137,13 @@
       {% endblock header_message %}
     </header>
     <div>
-
-{#      {% if messages %}#}
-{#          {% for message in messages %}#}
-{#              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>#}
-{#          {% endfor %}#}
-{#      {% endif %}#}
+      {% if request.user.is_superuser %}
+        {% if messages %}
+          {% for message in messages %}
+              <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>
+          {% endfor %}
+        {% endif %}
+      {% endif %}
 
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
