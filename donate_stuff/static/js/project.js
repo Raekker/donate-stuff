@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function() {
         btn.addEventListener("click", e => {
           e.preventDefault();
           if(this.currentStep === 1) {
-            const institutions = getInstitutions(getSelectedCategories());
+            const institutions = getFilteredInstitutions(getSelectedCategories());
             displayInstitutions(institutions);
           } else if (this.currentStep === 4) {
             displaySummary(getInputs());
@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-function getInstitutions(categories) {
+function getFilteredInstitutions(categories) {
   let filter = ""
   let prepFilter = []
   for (const category in categories) {
@@ -499,3 +499,134 @@ function sendDonationData(data) {
       }
   );
 }
+
+function getInstitutions() {
+  return fetch(
+      "/api/institutions/"
+  ).then(
+      resp => {
+        if (!resp.ok) {
+          console.log("Error")
+        }
+        return resp.json();
+      }
+  )
+}
+
+
+function getMyDonations(user) {
+  return fetch(
+      `/api/donations/?user=${user}`
+  ).then(resp => {
+    if(!resp.ok) {
+      console.log("Error");
+    }
+    return resp.json();
+  })
+}
+
+function displayMyDonations(donations, institutions, categories) {
+  Promise.allSettled([donations, institutions, categories]).then(
+      values => {
+        let categoriesData = {};
+        values[2].value.forEach(el => {
+          categoriesData[el.id] = el.name;
+        })
+        let institutionsData = {};
+        values[1].value.forEach(el => {
+          institutionsData[el.id] = el.name;
+        })
+        const divNotTaken = document.querySelector("div.not-taken");
+        const notTakenTable = document.querySelector("table.not-taken tbody");
+        const takenTable = document.querySelector("table.taken tbody");
+        const divTaken = document.querySelector("div.taken");
+        values[0].value.forEach(el => {
+          let categories = []
+          el.categories.forEach(category => {
+            categories.push(categoriesData[category])
+          })
+          if(el.is_taken === false) {
+            const tr = document.createElement("tr");
+            tr.dataset.id = el.id;
+            tr.innerHTML = `
+                <td class="align-middle" style="font-size: 1.6rem; margin: auto;">${institutionsData[el.institution]}</td>
+                <td class="align-middle" style="margin: auto; font-size: 1.6rem;">${el.quantity}</td>
+                <td class="align-middle" style="margin: auto; font-size: 1.6rem;">${categories.join(", ")}</td>
+                <td class="align-middle" style="margin: auto; font-size: 1.6rem">${el.pick_up_date} ${el.pick_up_time}</td>
+                <td><button class="btn btn--without-border">Zarchiwizuj</button></td>
+            `
+            notTakenTable.append(tr);
+          } else {
+            const tr = document.createElement("tr");
+            tr.dataset.id = el.id;
+            tr.innerHTML = `
+                <td class="align-middle" style="font-size: 1.6rem; margin: auto;">${institutionsData[el.institution]}</td>
+                <td class="align-middle" style="margin: auto; font-size: 1.6rem;">${el.quantity}</td>
+                <td class="align-middle" style="margin: auto; font-size: 1.6rem;">${categories.join(", ")}</td>
+                <td class="align-middle" style="margin: auto; font-size: 1.6rem">${el.pick_up_date} ${el.pick_up_time}</td>
+                <td><button class="btn btn--without-border">Odarchiwizuj</button></td>
+            `
+            takenTable.append(tr);
+          }
+        })
+
+        document.querySelector("div.donation-lists").querySelectorAll("button").forEach(btn => {
+          btn.addEventListener("click", ev => {
+            if(ev.target.parentNode.parentNode.parentNode.parentElement.dataset.taken === "false") {
+              ev.target.innerText = "Odarchiwizuj";
+              takenTable.append(ev.target.parentNode.parentNode)
+              if (takenTable.children.length > 0) {
+                divTaken.style.display = "block";
+              } else {
+                divTaken.style.display = "none";
+              }
+              let result = patchDonationTaken(ev.target.parentNode.parentNode.dataset.id, true);
+              ev.target.parentNode.parentNode.parentNode.parentElement.dataset.taken = "true";
+
+
+
+            } else {
+              ev.target.innerText = "Zarchiwizuj";
+              notTakenTable.append(ev.target.parentNode.parentNode)
+              if (notTakenTable.children.length > 0) {
+                divNotTaken.style.display = "block";
+              } else {
+                divNotTaken.style.display = "none";
+              }
+              let result = patchDonationTaken(ev.target.parentNode.parentNode.dataset.id, false);
+              ev.target.parentNode.parentNode.parentNode.parentElement.dataset.taken = "false";
+
+            }
+          })
+        })
+
+        if (notTakenTable.children.length > 0) {
+          divNotTaken.style.display = "block";
+        } else {
+          divNotTaken.style.display = "none";
+        }
+
+        if (takenTable.children.length > 0) {
+          divTaken.style.display = "block";
+        } else {
+          divTaken.style.display = "none";
+        }
+      }
+  )
+
+}
+
+function patchDonationTaken(id, taken=true) {
+  return fetch(
+    `/api/donations/${id}/`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        "X-CSRFToken": `${document.querySelector("input[name=csrfmiddlewaretoken]").value}`
+      },
+      body: JSON.stringify({is_taken:taken})
+    }
+)
+}
+displayMyDonations(getMyDonations(1), getInstitutions(), getCategories())

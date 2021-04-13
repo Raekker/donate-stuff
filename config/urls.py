@@ -10,6 +10,7 @@ from donate_stuff.donation.views import (
     MainPageView,
     DonationView,
     DonationConfirmationView,
+    DonationsView,
 )
 
 urlpatterns = [
@@ -30,6 +31,7 @@ urlpatterns = [
         DonationConfirmationView.as_view(),
         name="donation-confirmation",
     ),
+    path("my-donations", DonationsView.as_view(), name="my-donations"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # API URLS

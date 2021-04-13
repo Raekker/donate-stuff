@@ -32,3 +32,8 @@ class DonationView(LoginRequiredMixin, View):
 class DonationConfirmationView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, "donation/donation_form_confirmation.html")
+
+
+class DonationsView(LoginRequiredMixin, View):
+    def get(self, request):
+        return render(request, "users/user_donations.html")

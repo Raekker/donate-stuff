@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block header_message %}
+<div class="text-center" style="margin-top: 2%">
+  <h2>Moje Donacje</h2>
+  <div class="donation-lists container table-responsive">
+    {% csrf_token %}
+    <div class="not-taken" style="display: none;">
+      <h3 style="font-size: 2.2rem; margin: 3% 0"><strong>Nieodebrane</strong></h3>
+
+      <table class="table not-taken align-middle" style="margin: auto;" data-taken="false">
+        <thead>
+        <tr>
+          <th style="font-size: 1.6rem; margin: auto;">Nazwa instytucji</th>
+          <th style="margin-left: auto; font-size: 1.6rem;">Ilość worków</th>
+          <th style="margin-left: auto; font-size: 1.6rem;">Kategorie</th>
+          <th style="margin-left: auto; font-size: 1.6rem">Data odebrania</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+      </table>
+    </div>
+    <div class="taken" style="display: none;">
+      <h3 style="font-size: 2.2rem; margin: 3% 0"><strong>Odebrane</strong></h3>
+      <table class="table taken align-middle" style="margin: auto;" data-taken="true">
+        <thead>
+        <tr>
+          <th style="font-size: 1.6rem; margin: auto;">Nazwa instytucji</th>
+          <th style="margin-left: auto; font-size: 1.6rem;">Ilość worków</th>
+          <th style="margin-left: auto; font-size: 1.6rem;">Kategorie</th>
+          <th style="margin-left: auto; font-size: 1.6rem">Data odebrania</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock header_message %}
+
+{% block content %}
+
+{% endblock content %}

@@ -7,6 +7,9 @@ from donate_stuff.users.models import User
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
 
+    class Meta:
+        verbose_name_plural = "categories"
+
     def __str__(self):
         return self.name
 
@@ -39,6 +42,7 @@ class Donation(models.Model):
     pick_up_time = models.TimeField()
     pick_up_comment = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
+    is_taken = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.institution} - {self.user}"
