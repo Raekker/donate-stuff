@@ -267,6 +267,14 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
+if (window.location.href.search("my-donations")) {
+  displayMyDonations(
+      getMyDonations(JSON.parse(document.querySelector("#user_id").textContent)),
+      getInstitutions(),
+      getCategories()
+  )
+}
+
 function getFilteredInstitutions(categories) {
   let filter = ""
   let prepFilter = []
@@ -629,4 +637,3 @@ function patchDonationTaken(id, taken=true) {
     }
 )
 }
-displayMyDonations(getMyDonations(1), getInstitutions(), getCategories())

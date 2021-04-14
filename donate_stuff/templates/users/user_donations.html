@@ -47,3 +47,7 @@
 {% block content %}
 
 {% endblock content %}
+
+{% block inline_javascript %}
+{{ request.user.id|json_script:"user_id" }}
+{% endblock inline_javascript %}
