@@ -267,7 +267,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-if (window.location.href.search("my-donations")) {
+if (window.location.href.search("my-donations") !== -1) {
   displayMyDonations(
       getMyDonations(JSON.parse(document.querySelector("#user_id").textContent)),
       getInstitutions(),

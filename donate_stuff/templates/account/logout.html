@@ -9,14 +9,27 @@
 
 <p>{% trans 'Are you sure you want to sign out?' %}</p>
 
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button class="btn btn-danger" type="submit">{% trans 'Sign Out' %}</button>
-</form>
+
 
 
 {% endblock %}
 
+{% block header_message %}
+<div class="container" style="margin-top: 2%;">
+  <h2>Czy napewno chcesz się wylogować ?</h2>
+  <form method="post" action="{% url 'account_logout' %}">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  <button class="btn btn--without-border" type="submit" style="margin: auto">Wyloguj</button>
+</form>
+</div>
+{% endblock header_message %}
+
+{% block inline_javascript %}
+  <script>
+    const header = document.querySelector("header");
+    header.className = "header--form-page"
+  </script>
+{% endblock inline_javascript %}

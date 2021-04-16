@@ -32,9 +32,9 @@
 {##}
 {##}
 {#</div>#}
-<div class="text-center" style="margin-top: 15%">
-  <h2>{% if object.name %}
-  {{ object.name }}
+<div style="margin: 15% auto auto auto;">
+  <h2>{% if object.first_name and object.last_name %}
+  {{ object.first_name }} {{ object.last_name }}
   {% else %}
   {{ object.username }}
   {% endif %}</h2>

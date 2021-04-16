@@ -13,9 +13,9 @@ class User(AbstractUser):
     """Default user for donate-stuff."""
 
     #: First and last name do not cover name patterns around the globe
-    name = CharField(_("Name of User"), blank=True, max_length=255)
-    first_name = None  # type: ignore
-    last_name = None  # type: ignore
+    # name = CharField(_("Name of User"), blank=True, max_length=255)
+    first_name = CharField("Imię", blank=False, null=False, max_length=255)
+    last_name = CharField("Nazwisko", blank=False, null=False, max_length=255)
 
     def get_absolute_url(self):
         """Get url for user's detail view.
@@ -24,7 +24,7 @@ class User(AbstractUser):
             str: URL for user detail.
 
         """
-        return reverse("users:detail", kwargs={"username": self.username})
+        return reverse("users:detail", kwargs={"pk": self.pk})
 
 
 @receiver(post_save, sender=AUTH_USER_MODEL)

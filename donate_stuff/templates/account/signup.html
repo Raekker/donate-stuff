@@ -26,22 +26,19 @@
       {% if redirect_field_value %}
       <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
       {% endif %}
-{#      <div class="form-group">#}
-{#        <label for="id_name">#}
-{#          <input id="id_name" type="text" name="name" placeholder="Imię i Nazwisko" />#}
-{#        </label>#}
-{#      </div>#}
-{#       <div class="form-group">#}
-{#        <input type="text" name="surname" placeholder="Nazwisko" />#}
-{#      </div>#}
+      <div class="form-group">
+        <label for="id_first_name">
+          <input id="id_first_name" type="text" name="first_name" placeholder="Imię" />
+        </label>
+      </div>
+       <div class="form-group">
+        <label for="id_last_name">
+            <input id="id_last_name" type="text" name="last_name" placeholder="Nazwisko" />
+        </label>
+      </div>
       <div id="div_id_email" class="form-group">
         <label for="id_email">
           <input id="id_email" type="email" name="email" placeholder="Email" required=""/>
-        </label>
-      </div>
-      <div id="div_id_username" class="form-group">
-        <label for="id_username">
-          <input id="id_username" type="text" name="username" placeholder="Nazwa Użytkownika" required="" minlength="1" maxlength="150"/>
         </label>
       </div>
       <div id="div_id_password1" class="form-group">

@@ -92,15 +92,16 @@
 {#      </nav>#}
 {##}
 {#    </div>#}
-    <header class="{% if request.path == '/' %}header--main-page{% elif "donation" in request.path %}header--form-page{% endif %}">
+    <header class="{% if request.path == '/' %}header--main-page{% elif 'donation' in request.path %}header--form-page{% endif %}">
       <nav class="container container--70">
         <ul class="nav--actions">
           {% if request.user.is_authenticated %}
             <li class="logged-user">
-              Witaj {{ request.user.name }}
+              Witaj {{ request.user.first_name }}
               <ul class="dropdown">
-                <li><a href="{% url 'users:detail' request.user.username %}">Profil</a></li>
+                <li><a href="{% url 'users:detail' request.user.pk %}">Profil</a></li>
                 <li><a href="{% url 'my-donations' %}">Moje zbiórki</a></li>
+                <li><a href="{% url 'users:update' %}">Ustawienia</a></li>
                 {% if request.user.is_superuser %}
                   <li><a href="{% url 'admin:index' %}">Panel Administracyjny</a></li>
                 {% endif %}

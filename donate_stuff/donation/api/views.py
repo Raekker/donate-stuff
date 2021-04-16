@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 
-from donate_stuff.donation.api.filters import InstitutionFilter
+from donate_stuff.donation.api.filters import InstitutionFilter, DonationFilter
 from donate_stuff.donation.models import Category, Donation, Institution
 from donate_stuff.donation.api.serializers import (
     CategorySerializer,
@@ -23,3 +23,4 @@ class InstitutionViewSet(viewsets.ModelViewSet):
 class DonationViewSet(viewsets.ModelViewSet):
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
+    filterset_class = DonationFilter
